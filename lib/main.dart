@@ -54,35 +54,20 @@ class PageAccueil extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 20),
-            Container(
-                width: 400,
-                child: Column(children: [
-                  Text(
-                    'Bienvenue sur l\'application Magazine Infos !',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Découvrez les dernières actualités et articles intéressants.',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ])),
-            Image(
-              image: AssetImage('assets/images/magazine1.jpg'),
-              width: 400,
-              height: 300,
-            ),
-            SizedBox(height: 20),
-          ],
-        ),
-      ),
+      body: const SingleChildScrollView(
+          child: Column(
+        children: [
+          Image(
+            image: AssetImage('assets/images/magazine1.jpg'),
+            width: 500,
+            height: 300,
+          ),
+          PartieTitre(),
+          PartieTexte(),
+          PartieIcone(),
+          PartieRubrique(),
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           print('Tu as cliqué dessus'); //affichage dans la console
@@ -101,5 +86,123 @@ class PageAccueil extends StatelessWidget {
             style: TextStyle(fontSize: 12, color: Colors.white)),
       ),
     );
+  }
+}
+
+//widgets pour les différentes parties de l'application
+//widget pour le titre de la partie
+class PartieTitre extends StatelessWidget {
+  const PartieTitre({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            //titre principal
+            Text(
+              'Bienvenue sur l\'application Magazine Infos !',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            //titre secondaire
+            Text(
+              'Découvrez les dernières actualités et articles intéressants.',
+              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+            ),
+          ],
+        ));
+  }
+}
+
+//widget pour le texte de la partie
+class PartieTexte extends StatelessWidget {
+  const PartieTexte({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(10),
+        child: Text(
+            'Dans un monde en constante évolution, notre objectif est de vous offrir un contenu riche, pertinent et accessible, qui met en lumière les tendances actuelles, les innovations, ainsi que les histoires qui façonnent notre quotidien.À travers ce magazine, nous abordons des thématiques variées allant de la technologie, à la culture, en passant par l’éducation, l’entrepreneuriat et les enjeux de société. Chaque article est conçu pour informer, éveiller la curiosité et apporter une nouvelle perspective sur le monde qui nous entoure.Ce numéro met particulièrement l’accent sur [thème du numéro : ex. l’innovation numérique / la jeunesse africaine / l’entrepreneuriat local], un sujet au cœur des transformations actuelles.'));
+  }
+}
+
+//widget pour l'image de la partie
+class PartieRubrique extends StatelessWidget {
+  const PartieRubrique({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              'assets/images/maquette-magazines-mode.avif',
+              width: 150,
+              height: 150,
+              fit: BoxFit.cover,
+            ),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.asset(
+              'assets/images/header_magazines2.webp',
+              width: 150,
+              height: 150,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+//widget pour la partie de l'icone
+class PartieIcone extends StatelessWidget {
+  const PartieIcone({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.only(top: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              child: Column(
+                children: const [
+                  Icon(Icons.phone, color: Colors.brown),
+                  SizedBox(height: 5),
+                  Text('TEL', style: TextStyle(color: Colors.brown)),
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                children: const [
+                  Icon(Icons.email, color: Colors.brown),
+                  SizedBox(height: 5),
+                  Text('MAIL', style: TextStyle(color: Colors.brown)),
+                ],
+              ),
+            ),
+            Container(
+              child: Column(
+                children: const [
+                  Icon(Icons.share, color: Colors.brown),
+                  SizedBox(height: 5),
+                  Text('PARTAGE', style: TextStyle(color: Colors.brown)),
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }
