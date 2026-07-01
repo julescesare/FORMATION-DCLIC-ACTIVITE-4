@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:activite_1/views/redacteur_interface.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,19 +11,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MonAppli();
+    return const MonApplication();
   }
 }
 
-class MonAppli extends StatelessWidget {
-  const MonAppli({super.key});
+class MonApplication extends StatelessWidget {
+  const MonApplication({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Magazine',
       debugShowCheckedModeBanner: false,
-      home: PageAccueil(),
+      home: RedacteurInterface(),
     );
   }
 }
