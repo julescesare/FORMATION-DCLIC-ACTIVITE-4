@@ -37,7 +37,7 @@ class DatabaseManager {
     ''');
   }
 
-  // CREATE - Insérer un utilisateur
+  // CREATE - Insérer un redacteur
   Future<int> insertRedacteur(Redacteur redacteur) async {
     final db = await database;
     return await db.insert(
@@ -47,14 +47,14 @@ class DatabaseManager {
     );
   }
 
-  // READ - Lire tous les utilisateurs
+  // READ - Lire tous les redacteurs
   Future<List<Redacteur>> getAllRedacteurs() async {
     final db = await database;
     final result = await db.query('redacteurs', orderBy: 'nom');
     return result.map((map) => Redacteur.fromMap(map)).toList();
   }
 
-  // READ - Lire un utilisateur par ID
+  // READ - Lire un redacteur par ID
   Future<Redacteur?> getRedacteurById(int id) async {
     final db = await database;
     final result = await db.query(
@@ -68,7 +68,7 @@ class DatabaseManager {
     return null;
   }
 
-  // UPDATE - Mettre à jour un utilisateur
+  // UPDATE - Mettre à jour un redacteur
   Future<int> updateRedacteur(Redacteur redacteur) async {
     final db = await database;
     return await db.update(
@@ -79,7 +79,7 @@ class DatabaseManager {
     );
   }
 
-  // DELETE - Supprimer un utilisateur
+  // DELETE - Supprimer un redacteur
   Future<int> deleteRedacteur(int id) async {
     final db = await database;
     return await db.delete(

@@ -40,7 +40,7 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
     });
   }
 
-  // CREATE - Ajouter un utilisateur
+  // CREATE - Ajouter un redacteur
   Future<void> _ajouterRedacteur() async {
     if (_nomController.text.isEmpty ||
         _emailController.text.isEmpty ||
