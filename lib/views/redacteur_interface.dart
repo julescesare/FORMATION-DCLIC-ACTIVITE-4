@@ -32,6 +32,45 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
     super.dispose();
   }
 
+  //Validateur du champs nom
+  String? nomValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Le nom est obligatoire";
+    }
+
+    if (value.trim().length < 2) {
+      return "Le nom est trop court";
+    }
+
+    return null;
+  }
+
+  //validateur du champs prenom
+  String? prenomValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return "Le prenom est obligatoire";
+    }
+
+    if (value.trim().length < 2) {
+      return "Le prenom est trop court";
+    }
+
+    return null;
+  }
+
+  //validateur de l'email
+  String? emailValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Veuillez entrer une adresse e-mail';
+    }
+    // Expression régulière standard pour le format d'un email
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Veuillez entrer une adresse e-mail valide';
+    }
+    return null;
+  }
+
   // Charger tous les redacteurs
   Future<void> _chargerRedacteurs() async {
     final redacteurs = await _dbManager.getAllRedacteurs();
@@ -42,32 +81,42 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
 
   // CREATE - Ajouter un redacteur
   Future<void> _ajouterRedacteur() async {
-    if (_nomController.text.isEmpty ||
-        _emailController.text.isEmpty ||
-        _prenomController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Veuillez remplir tous les champs'),
-          backgroundColor: Colors.red,
-        ),
-      );
+    if (!_formKey.currentState!.validate()) {
       return;
     }
-
     final redacteur = Redacteur(
       nom: _nomController.text,
       email: _emailController.text,
       prenom: _prenomController.text,
     );
 
-    await _dbManager.insertRedacteur(redacteur);
+    try {
+      await _dbManager.insertRedacteur(redacteur);
 
-    _chargerRedacteurs();
-    _viderChamps();
+      _chargerRedacteurs();
+      _viderChamps();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Rédacteur ajouté avec succès"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   // UPDATE - Modifier un redacteur
   Future<void> _modifierRedacteur() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
     if (_redacteurSelectionne == null) return;
 
     final redacteur = Redacteur(
@@ -76,13 +125,28 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
       email: _emailController.text,
       prenom: _prenomController.text,
     );
+    try {
+      await _dbManager.updateRedacteur(redacteur);
+      _chargerRedacteurs();
+      _viderChamps();
+      setState(() {
+        _redacteurSelectionne = null;
+      });
 
-    await _dbManager.updateRedacteur(redacteur);
-    _chargerRedacteurs();
-    _viderChamps();
-    setState(() {
-      _redacteurSelectionne = null;
-    });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Rédacteur modifié avec succès"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   // DELETE - Supprimer un redacteur
@@ -111,6 +175,12 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
     if (confirmation == true) {
       await _dbManager.deleteRedacteur(id);
       _chargerRedacteurs();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Rédacteur supprimé avec succès"),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
   }
 
@@ -169,13 +239,9 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
                         decoration: const InputDecoration(
                           labelText: 'Nom',
                           border: OutlineInputBorder(),
+                          icon: Icon(Icons.person),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Champ requis";
-                          }
-                          return null;
-                        },
+                        validator: nomValidator,
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
@@ -183,28 +249,19 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
                         decoration: const InputDecoration(
                           labelText: 'Prénom',
                           border: OutlineInputBorder(),
+                          icon: Icon(Icons.person),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Champ requis";
-                          }
-                          return null;
-                        },
+                        validator: prenomValidator,
                       ),
                       const SizedBox(height: 16),
                       TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Champ requis";
-                          }
-                          return null;
-                        },
-                      ),
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.email),
+                          ),
+                          validator: emailValidator),
                       const SizedBox(height: 12),
                       Row(
                         children: [
@@ -253,22 +310,28 @@ class _RedacteurInterfaceState extends State<RedacteurInterface> {
                   final redacteur = _redacteurs[index];
                   return Card(
                     margin: const EdgeInsets.only(bottom: 8),
-                    child: ListTile(
-                      title: Text(
-                          '${redacteur.prenom} ${redacteur.nom.toUpperCase()}'),
-                      subtitle: Text('${redacteur.email}}'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () => _selectionnerRedacteur(redacteur),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _supprimerRedacteur(redacteur.id!),
-                          ),
-                        ],
+                    child: Card(
+                      margin: const EdgeInsets.all(8),
+                      color: Colors.brown[100],
+                      child: ListTile(
+                        title: Text(
+                            '${redacteur.prenom} ${redacteur.nom.toUpperCase()}'),
+                        subtitle: Text(redacteur.email),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () =>
+                                  _selectionnerRedacteur(redacteur),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () =>
+                                  _supprimerRedacteur(redacteur.id!),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

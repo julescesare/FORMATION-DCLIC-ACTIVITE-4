@@ -17,7 +17,7 @@ class Redacteur {
         prenom = prenom,
         email = email;
 
-  // Convertir un Map (de la base de données) en Utilisateur
+  // Convertir un Map (de la base de données) en  Redacteur
   factory Redacteur.fromMap(Map<String, dynamic> map) {
     return Redacteur(
       id: map['id'] as int?,
@@ -26,7 +26,7 @@ class Redacteur {
       email: map['email'] as String,
     );
   }
-  // Convertir un Utilisateur en Map (pour la base de données)
+  // Convertir un Redacteur en Map (pour la base de données)
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -34,5 +34,11 @@ class Redacteur {
       'prenom': prenom,
       'email': email,
     };
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'Redacteur(id: $id, nom: $nom, prenom: $prenom, email: $email)';
   }
 }

@@ -26,7 +26,8 @@ class DatabaseManager {
   }
 
   Future<void> _createDB(Database db, int version) async {
-    await db.execute('''
+    try {
+      await db.execute('''
       CREATE TABLE redacteurs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nom TEXT NOT NULL,
@@ -35,16 +36,23 @@ class DatabaseManager {
         
       )
     ''');
+    } catch (e) {
+      throw Exception("Erreur lors de la création de la table : $e");
+    }
   }
 
   // CREATE - Insérer un redacteur
   Future<int> insertRedacteur(Redacteur redacteur) async {
-    final db = await database;
-    return await db.insert(
-      'redacteurs',
-      redacteur.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    try {
+      final db = await database;
+      return await db.insert(
+        'redacteurs',
+        redacteur.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.abort,
+      );
+    } on DatabaseException catch (e) {
+      throw Exception("Impossible d'ajouter le rédacteur : ${e.toString()}");
+    }
   }
 
   // READ - Lire tous les redacteurs
@@ -89,7 +97,7 @@ class DatabaseManager {
     );
   }
 
-  //Fermeture de la connexion à la base de données
+  //CLOSE - Fermeture de la connexion à la base de données
   Future<void> close() async {
     final db = await database;
     db.close();
