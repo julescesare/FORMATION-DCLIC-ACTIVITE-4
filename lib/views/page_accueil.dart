@@ -33,6 +33,7 @@ class _PageAccueilState extends State<PageAccueil> {
             style: TextStyle(color: Colors.white, fontSize: 20)),
         centerTitle: true,
         backgroundColor: Colors.brown,
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.white),
@@ -119,25 +120,7 @@ class _PageAccueilState extends State<PageAccueil> {
           SectionRubrique(),
         ],
       )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('Tu as cliqué dessus'); //affichage dans la console
-          //affichage d'un message à l'utilisateur
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Tu as cliqué dessus',
-                style: TextStyle(fontSize: 12, color: Colors.brown[900]),
-              ),
-              backgroundColor: Colors.brown[50],
-            ),
-          );
-        },
-        backgroundColor: Colors.brown,
-        focusColor: Colors.brown[50],
-        child: const Text("Click",
-            style: TextStyle(fontSize: 12, color: Colors.white)),
-      ),
+ 
     );
   }
 }

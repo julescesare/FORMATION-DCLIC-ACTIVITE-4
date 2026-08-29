@@ -111,6 +111,7 @@ class _ModifierRedacteurPageState extends State<ModifierRedacteurPage> {
       appBar: AppBar(
         title: const Text('Modifier un Rédacteur'),
         backgroundColor: Colors.brown,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -138,36 +139,39 @@ class _ModifierRedacteurPageState extends State<ModifierRedacteurPage> {
               ),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _enregistrerModifications,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.brown,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 12,
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _isLoading ? null : _enregistrerModifications,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.brown,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: _isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Colors.white,
+                child: _isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        ),
+                      )
+                    : const Text(
+                        'Enregistrer',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
                         ),
                       ),
-                    )
-                  : const Text(
-                      'Enregistrer',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
+              ),
             ),
           ],
         ),

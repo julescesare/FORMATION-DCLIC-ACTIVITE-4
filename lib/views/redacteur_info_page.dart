@@ -16,6 +16,7 @@ class RedacteurInfoPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Informations des Rédacteurs'),
         backgroundColor: Colors.brown,
+        foregroundColor: Colors.white,
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: controller.redacteursStream,

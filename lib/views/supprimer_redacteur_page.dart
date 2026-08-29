@@ -91,6 +91,7 @@ class _SupprimerRedacteurPageState extends State<SupprimerRedacteurPage> {
       appBar: AppBar(
         title: const Text('Supprimer un Rédacteur'),
         backgroundColor: Colors.brown,
+        foregroundColor: Colors.white,
       ),
       body: Center(
         child: SingleChildScrollView(

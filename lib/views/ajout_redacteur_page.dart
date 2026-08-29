@@ -99,6 +99,7 @@ class _AjoutRedacteurPageState extends State<AjoutRedacteurPage> {
       appBar: AppBar(
         title: const Text('Ajouter un Rédacteur'),
         backgroundColor: Colors.brown,
+        foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -146,27 +147,30 @@ class _AjoutRedacteurPageState extends State<AjoutRedacteurPage> {
                 },
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _isLoading ? null : _ajouterRedacteur,
-                style: styleBouton,
-                child: _isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _ajouterRedacteur,
+                  style: styleBouton,
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                        )
+                      : const Text(
+                          'Ajouter',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
                           ),
                         ),
-                      )
-                    : const Text(
-                        'Ajouter',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
+                ),
               ),
             ],
           ),
